@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{base :: Layout(~{::title}, ~{::section})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Index Page</title>
+    <!-- Bootstrap CSS (if not already included in base.html) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 offset-md-1">
+                <div class="card">
+                    <div class="card-header text-center fs-4">Employee Details</div>
+                    <div class="card-body">
+
+                        <!-- ✅ Show Success / Error Message -->
+                        <div th:if="${msg}" class="alert alert-info text-center" id="msgAlert">
+                            [[${msg}]]
+                        </div>
+
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Address</th>
+                                    <th scope="col">Gender</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="e : ${empList}">
+                                    <td>[[${e.id}]]</td>
+                                    <td>[[${e.name}]]</td>
+                                    <td>[[${e.email}]]</td>
+                                    <td>[[${e.address}]]</td>
+                                    <td>[[${e.gender}]]</td>
+                                    <td>
+                                        <!-- ✅ Correct Edit button -->
+                                        <a th:href="@{/editEmp/{id}(id=${e.id})}" 
+                                           class="btn btn-sm btn-primary">Edit</a>
+
+                                        <!-- ✅ Delete button with confirmation -->
+                                        <a th:href="@{/deleteEmp/{id}(id=${e.id})}" 
+                                           class="btn btn-sm btn-danger"
+                                           onclick="return confirm('Are you sure you want to delete this employee?');">
+                                           Delete
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ✅ Auto-hide alert after 3s -->
+<script>
+    setTimeout(() => {
+        const alert = document.getElementById('msgAlert');
+        if (alert) {
+            alert
